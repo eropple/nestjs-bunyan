@@ -26,7 +26,7 @@ const injector_decorations_1 = require("./injector-decorations");
 const core_1 = require("@nestjs/core");
 let RequestTrackerMiddleware = class RequestTrackerMiddleware {
     constructor(rootLogger, logger, options, request) {
-        console.log("RequestTrackerMiddleware request: ", request);
+        console.log("RequestTrackerMiddleware typeof(request): ", typeof (request));
     }
     use(req, res, next) {
         const start = new Date();
