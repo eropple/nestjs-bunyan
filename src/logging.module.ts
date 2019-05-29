@@ -39,7 +39,7 @@ export class LoggingModule implements NestModule {
       inject: [ROOT_LOGGER, forwardRef(() => REQUEST)],
       useFactory: (rootLogger: Bunyan, request: IncomingMessage) => {
         console.log("LOGGER provider, typeof(rootLogger, request): ", typeof(rootLogger), typeof(request));
-        const correlationId = flatten(request.headers["x-correlation-id"]) || "NO_X_CORRELATION_ID_FOUND";
+        const correlationId = flatten(request.headers["x-correlation-id"])[0] || "NO_X_CORRELATION_ID_FOUND";
 
         const requestLogger = rootLogger.child({ correlationId });
         return requestLogger;
