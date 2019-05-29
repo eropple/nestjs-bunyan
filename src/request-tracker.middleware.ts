@@ -14,7 +14,7 @@ export class RequestTrackerMiddleware implements NestMiddleware {
     @LoggingOptions() options: Options,
     @Inject(REQUEST) request: IncomingMessage
   ) {
-    console.log("RequestTrackerMiddleware typeof(request): ", typeof(request));
+    console.log("RequestTrackerMiddleware typeof(rootLogger, logger, options, request): ", typeof(rootLogger), typeof(logger), typeof(options), typeof(request));
     // this._logger = logger.child({ component: "RequestTracker" });
   }
   use(req: IncomingMessage, res: ServerResponse, next: () => void) {
