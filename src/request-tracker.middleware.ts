@@ -5,17 +5,13 @@ import { Logger, RootLogger, LoggingOptions } from './injector-decorations';
 import { REQUEST } from "@nestjs/core";
 import { LoggingOptions as Options } from "./options";
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class RequestTrackerMiddleware implements NestMiddleware {
   // private readonly _logger: Bunyan;
   constructor(
     @RootLogger() rootLogger: Bunyan,
-    @Logger() logger: Bunyan,
-    @LoggingOptions() options: Options,
-    @Inject(REQUEST) request: IncomingMessage
   ) {
-    console.log("RequestTrackerMiddleware typeof(rootLogger, logger, options, request): ", typeof(rootLogger), typeof(logger), typeof(options), typeof(request));
-    // this._logger = logger.child({ component: "RequestTracker" });
+    console.log("RequestTrackerMiddleware typeof(rootLogger): ", typeof(rootLogger));
   }
   use(req: IncomingMessage, res: ServerResponse, next: () => void) {
     const start = new Date();

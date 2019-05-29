@@ -33,7 +33,7 @@ class LoggingModule {
             inject: [injector_keys_1.ROOT_LOGGER, common_1.forwardRef(() => core_1.REQUEST)],
             useFactory: (rootLogger, request) => {
                 console.log("LOGGER provider, typeof(rootLogger, request): ", typeof (rootLogger), typeof (request));
-                const correlationId = lodash_1.flatten(request.headers["x-correlation-id"]) || "NO_X_CORRELATION_ID_FOUND";
+                const correlationId = lodash_1.flatten(request.headers["x-correlation-id"])[0] || "NO_X_CORRELATION_ID_FOUND";
                 const requestLogger = rootLogger.child({ correlationId });
                 return requestLogger;
             }

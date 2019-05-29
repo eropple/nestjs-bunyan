@@ -21,12 +21,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Bunyan = __importStar(require("bunyan"));
 const common_1 = require("@nestjs/common");
-const http_1 = require("http");
 const injector_decorations_1 = require("./injector-decorations");
-const core_1 = require("@nestjs/core");
 let RequestTrackerMiddleware = class RequestTrackerMiddleware {
-    constructor(rootLogger, logger, options, request) {
-        console.log("RequestTrackerMiddleware typeof(request): ", typeof (request));
+    constructor(rootLogger) {
+        console.log("RequestTrackerMiddleware typeof(rootLogger): ", typeof (rootLogger));
     }
     use(req, res, next) {
         const start = new Date();
@@ -41,12 +39,9 @@ let RequestTrackerMiddleware = class RequestTrackerMiddleware {
     }
 };
 RequestTrackerMiddleware = __decorate([
-    common_1.Injectable({ scope: common_1.Scope.REQUEST }),
+    common_1.Injectable(),
     __param(0, injector_decorations_1.RootLogger()),
-    __param(1, injector_decorations_1.Logger()),
-    __param(2, injector_decorations_1.LoggingOptions()),
-    __param(3, common_1.Inject(core_1.REQUEST)),
-    __metadata("design:paramtypes", [Object, Object, Object, http_1.IncomingMessage])
+    __metadata("design:paramtypes", [Object])
 ], RequestTrackerMiddleware);
 exports.RequestTrackerMiddleware = RequestTrackerMiddleware;
 //# sourceMappingURL=request-tracker.middleware.js.map
