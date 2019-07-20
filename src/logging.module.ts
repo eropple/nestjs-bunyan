@@ -24,18 +24,26 @@ export class LoggingModule {
     };
 
     const correlationIdHeader = options.correlationIdHeader || "x-correlation-id";
-    const requestLoggerProvider: FactoryProvider = {
-      provide: LOGGER,
-      scope: Scope.REQUEST,
-      inject: [ROOT_LOGGER, REQUEST],
-      useFactory: (rootLogger: Bunyan, request: IncomingMessage) => {
-        const rawId = request.headers[correlationIdHeader];
-        const correlationId = flatten<string | undefined>([rawId])[0] || "NO_CORRELATION_ID_FOUND";
+    const requestLoggerProvider: FactoryProvider =
+      options.staticLogger
+        ? {
+          provide: LOGGER,
+          scope: Scope.DEFAULT,
+          inject: [ROOT_LOGGER],
+          useFactory: (rootLogger: Bunyan) => rootLogger,
+        }
+        : {
+          provide: LOGGER,
+          scope: Scope.REQUEST,
+          inject: [ROOT_LOGGER, REQUEST],
+          useFactory: (rootLogger: Bunyan, request: IncomingMessage) => {
+            const rawId = request.headers[correlationIdHeader];
+            const correlationId = flatten<string | undefined>([rawId])[0] || "NO_CORRELATION_ID_FOUND";
 
-        const requestLogger = rootLogger.child({ correlationId });
-        return requestLogger;
-      }
-    }
+            const requestLogger = rootLogger.child({ correlationId });
+            return requestLogger;
+          }
+        }
 
     const requestMiddlewareProvider: FactoryProvider = {
       provide: REQUEST_MIDDLEWARE,

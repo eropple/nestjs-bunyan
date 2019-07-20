@@ -4,6 +4,13 @@ application. It supports full request-specific logging by providing a
 request-scoped Bunyan logger in the dependency injector and includes an
 in/out interceptor for recording request data and request timing.
 
+## Recent Changes ##
+### 0.3.0 ###
+- Documented available options more deeply.
+- Added a `staticLogger` option. When true, the `LOGGER` key (and the
+  `@Logger()` decoration) injects the same thing as `ROOT_LOGGER`, making
+  it easier to use NestJS logging outside of an HTTP context.
+
 ## Installation ##
 `yarn add @eropple/nestjs-bunyan` or `npm install --save @eropple/nestjs-bunyan`
 depending on your package manager of choice.
