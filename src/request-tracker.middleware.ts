@@ -8,6 +8,7 @@ import { LoggingOptions } from "./options";
 
 export class RequestTrackerMiddleware implements NestMiddleware {
   private readonly _logger: Bunyan;
+  private readonly _dropHeaders: Array<string>;
 
   constructor(
     rootLogger: Bunyan,
@@ -17,6 +18,8 @@ export class RequestTrackerMiddleware implements NestMiddleware {
     if (options.requestTrackerLevel) {
       this._logger.level(options.requestTrackerLevel);
     }
+
+    this._dropHeaders = [ 'authorization', ...this.options.dropHeaders || [] ].map(h => h.toLowerCase());
   }
 
   use(req: IncomingMessage, res: ServerResponse, next: () => void) {
@@ -27,7 +30,11 @@ export class RequestTrackerMiddleware implements NestMiddleware {
     data.method = req.method;
     data.url = req.url;
     data.ip = req.connection.remoteAddress;
-    data.headers = req.headers;
+    data.headers = { ...req.headers };
+
+    for (const h of this._dropHeaders) {
+      delete data.headers[h];
+    }
 
     this._logger.info({ correlationId, request: "start", ...data });
 

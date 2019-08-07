@@ -24,4 +24,10 @@ export interface LoggingOptions {
    * The level at which requests should be logged.
    */
   requestTrackerLevel?: LogLevel | LogLevelString;
+
+  /**
+   * A set of headers to drop from the log. `Authorization` will _always_ be
+   * dropped; this is not removable.
+   */
+  dropHeaders?: Array<string>;
 }
