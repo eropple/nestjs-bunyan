@@ -1,4 +1,6 @@
 # `@eropple/nestjs-bunyan` #
+[![npm version](https://badge.fury.io/js/%40eropple%2Fnestjs-bunyan.svg)](https://badge.fury.io/js/%40eropple%2Fnestjs-bunyan)
+
 This package contains a module to provide Bunyan logging across a NestJS
 application. It supports full request-specific logging by providing a
 request-scoped Bunyan logger in the dependency injector and includes an
