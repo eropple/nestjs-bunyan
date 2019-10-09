@@ -1,18 +1,20 @@
-import { DynamicModule, Scope, RequestMethod, Global, Module } from '@nestjs/common';
-import { FactoryProvider, NestModule, MiddlewareConsumer, ValueProvider, INestApplication } from '@nestjs/common/interfaces';
-import { REQUEST } from "@nestjs/core";
+import { DynamicModule, Scope, Global, Module } from '@nestjs/common';
+import { FactoryProvider, ValueProvider } from '@nestjs/common/interfaces';
+import { REQUEST, APP_INTERCEPTOR } from "@nestjs/core";
 import * as Bunyan from "bunyan";
 import { IncomingMessage } from 'http';
-import { merge, flatten } from "lodash";
+import { flatten } from "lodash";
 
 import { LoggingOptions } from './options';
-import { ROOT_LOGGER, LOGGER, LOGGING_OPTIONS, REQUEST_MIDDLEWARE } from './injector-keys';
-import { RequestTrackerMiddleware } from './request-tracker.middleware';
+import { ROOT_LOGGER, LOGGER, LOGGING_OPTIONS } from './injector-keys';
+import { RequestTrackerInterceptor } from './request-tracker.interceptor';
 
 @Global()
 @Module({})
 export class LoggingModule {
   static forRoot(rootLogger: Bunyan, options: LoggingOptions = {}): DynamicModule {
+    const moduleLogger = rootLogger.child({ component: 'LoggingModule' });
+
     const loggingOptions: ValueProvider = {
       provide: LOGGING_OPTIONS,
       useValue: options
@@ -45,34 +47,12 @@ export class LoggingModule {
           }
         }
 
-    const requestMiddlewareProvider: FactoryProvider = {
-      provide: REQUEST_MIDDLEWARE,
-      // we'd like to use the request-scoped logger here but it seems to
-      // not properly populate in the DI container. Because of this, the
-      // request tracker handles its own child-logger tagging.
-      //
-      // For reasons I am currently describing as "impenetrable", the DI
-      // container throws a monstrous fit when I try to use `MiddlewareConsumer`
-      // to attach `RequestTrackerMiddleware` to all routes. As such, we instead
-      // have the helper method below to attach it globally as a functional
-      // middleware.
-      //
-      // TODO: refactor into a single function to shrink the call stack.
-      useFactory: () => {
-        const mid = new RequestTrackerMiddleware(rootLogger, options);
-        return ((req: any, res: any, next: any) => {
-          mid.use(req, res, next);
-        });
-      }
-    }
-
     const mod = {
       module: LoggingModule,
       imports: [],
       providers: [
         rootLoggerProvider,
         loggingOptions,
-        requestMiddlewareProvider,
         requestLoggerProvider
       ],
       exports: [
@@ -82,10 +62,18 @@ export class LoggingModule {
       ]
     };
 
-    return mod;
-  }
+    if (!options.skipRequestInterceptor) {
+      moduleLogger.info('Adding request interceptor.');
+      const requestInterceptorProvider: FactoryProvider = {
+        provide: APP_INTERCEPTOR,
+        scope: Scope.REQUEST,
+        inject: [LOGGING_OPTIONS, LOGGER],
+        useFactory: (opts: LoggingOptions, logger: Bunyan) => new RequestTrackerInterceptor(logger, opts),
+      }
 
-  static addRequestMiddleware(app: INestApplication) {
-    app.use(app.get(REQUEST_MIDDLEWARE));
+      mod.providers.push(requestInterceptorProvider);
+    }
+
+    return mod;
   }
 }

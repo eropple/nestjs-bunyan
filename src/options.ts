@@ -12,6 +12,12 @@ export interface LoggingOptions {
   staticLogger?: boolean;
 
   /**
+   * If true, will not attach the `RequestTrackerInterceptor` to your request
+   * chain.
+   */
+  skipRequestInterceptor?: boolean;
+
+  /**
    * The correlation ID to use when making a child for all requests.
    */
   correlationIdHeader?: string;
@@ -30,4 +36,10 @@ export interface LoggingOptions {
    * dropped; this is not removable.
    */
   dropHeaders?: Array<string>;
+
+  /**
+   * Pass a string to pseudonymize all IP addresses being logged by the request
+   * middleware.
+   */
+  ipSalt?: string;
 }
