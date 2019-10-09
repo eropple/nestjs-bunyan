@@ -7,11 +7,12 @@ request-scoped Bunyan logger in the dependency injector and includes an
 in/out interceptor for recording request data and request timing.
 
 ## Recent Changes ##
-### 0.3.0 ###
-- Documented available options more deeply.
-- Added a `staticLogger` option. When true, the `LOGGER` key (and the
-  `@Logger()` decoration) injects the same thing as `ROOT_LOGGER`, making
-  it easier to use NestJS logging outside of an HTTP context.
+### 0.5.0 ###
+- **BREAKING CHANGE**: Now uses an interceptor instead of a middleware. The
+  upside is that it no longer requires calling something explicitly to set
+  up request tracking.
+- IP address pseudonymization implemented. Off by default. To enable, pass
+  `{ ipSalt: 'someString' }` in your logging options.
 
 ## Installation ##
 `yarn add @eropple/nestjs-bunyan` or `npm install --save @eropple/nestjs-bunyan`
@@ -52,6 +53,8 @@ This will do a few things:
   `@Logger()` decorator on your constructor parameter. You must only use this
   with `Scope.REQUEST` injected services (and NestJS should transitively make
   anything that depends on `@Logger()` a request-scoped provider automatically.)
+- It **adds the request interceptor to your request chain**. See "Request
+  Tracking", below.
 
 **Important note:** this module expects a request to have some kind of
 [correlation ID](). By default, this will be `X-Correlation-Id` (and if you need
@@ -61,7 +64,7 @@ can change it to, for example, `X-Request-Id`, by passing something like
 `LoggingModule.forRoot()`.
 
 ### Request Tracking ###
-`@eropple/nestjs-bunyan` also includes a request tracking middleware that
+`@eropple/nestjs-bunyan` also includes a request tracking interceptor that
 records into the log the start and end of every request coming into your server.
 The start log entry includes all request headers; the end log entry includes the
 time taken with the request and the status code. You can use these, plus the
@@ -70,21 +73,20 @@ correlation ID, to determine overall request timings.
 The implementation is currently a little tortured (to write, not to use), so
 it's implemented a little differently than normal. Use it a-like so:
 
-```ts
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.use(CorrelationIdMiddleware());
-  LoggingModule.addRequestMiddleware(app);
-
-  await app.listen(3000);
-}
-bootstrap();
-```
-
 The request middleware records timing in milliseconds, so it _probably_ doesn't
-matter too much where in your middleware chain you do it, but it's probably best
-to put it as early in the process as possible, immediately behind whatever
-middleware is ensuring that you have a working correlation ID.
+matter too much where in your interceptor chain you do it, but it's probably
+best to put it as early in the process as possible, I usually import
+`LoggingModule.forRoot` at the very top of my app module for this reason.
+
+#### IP Address Pseudonymization ####
+This middleware, as of version 0.5.0, can pseudonymize IP addresses for you. This
+may potentially be of use to you in working with GDPR and other privacy regulations
+(don't take my word for it, talk to your data privacy officer or a GDPR-focused
+lawyer).
+
+Any string passed to `LoggingOptions.ipSalt` will turn on pseudonymization. This
+uses `shake128` for hashing, which is a bit overkill for IP+salt hashing but it
+produces a shorter hash that's easier for humans to work with.
 
 
 ### Controller Example ###

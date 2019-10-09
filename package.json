@@ -1,6 +1,6 @@
 {
   "name": "@eropple/nestjs-bunyan",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Module and tooling for request-scoped Bunyan logging in NestJS.",
   "main": "dist",
   "author": "Ed Ropple",
@@ -27,7 +27,6 @@
     "@types/jest": "^24.0.13",
     "@types/lodash": "^4.14.130",
     "@types/node": "^12.0.2",
-    "@types/on-headers": "^1.0.0",
     "@types/uuid": "^3.4.4",
     "rxjs": ">=6.4.0",
     "ts-jest": "^24.0.2",
@@ -38,7 +37,6 @@
     "@types/express": "^4.16.1",
     "bunyan": "^1.8.12",
     "lodash": "^4.17.11",
-    "on-headers": "^1.0.2",
     "reflect-metadata": "^0.1.13",
     "utility-types": "^3.7.0"
   }
