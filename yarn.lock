@@ -29,6 +29,21 @@
     is-absolute "^1.0.0"
     is-negated-glob "^1.0.0"
 
+"@eropple/nestjs-bunyan-logger@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@eropple/nestjs-bunyan-logger/-/nestjs-bunyan-logger-0.1.1.tgz#ff0bbc92a1ce2aa59c1ba9212f22364795469642"
+  integrity sha512-0vSvXKm6gX8J/s/A066oo2qkrImuPzbS3bO9b6lQZJ0EheZeNzUHFGYqApJpGLcfLHYLuiJjqLTdSstfz732MA==
+  dependencies:
+    "@types/bunyan" "^1.8.6"
+
+"@eropple/nestjs-correlation-id@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@eropple/nestjs-correlation-id/-/nestjs-correlation-id-1.0.1.tgz#51b3ec94f718794511445078be1840e0e3d5d165"
+  integrity sha512-GTZsXUfifBrBO8pi6TsvD88L0XwYjontICvI4hw7O4ZJdRrlusH8C4FPLJeK3Az/yb1VfjbiCllNBRTwTY0I9w==
+  dependencies:
+    reflect-metadata "^0.1.13"
+    uuid "^3.3.2"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -1416,11 +1431,6 @@ object.pick@^1.3.0:
   dependencies:
     isobject "^3.0.1"
 
-on-headers@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/on-headers/-/on-headers-1.0.2.tgz#772b0ae6aaa525c399e489adfad90c403eb3c28f"
-  integrity sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==
-
 once@^1.3.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
@@ -1941,6 +1951,11 @@ uuid@3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
+
+uuid@^3.3.2:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
+  integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
 
 wide-align@^1.1.0:
   version "1.1.3"
