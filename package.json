@@ -1,6 +1,6 @@
 {
   "name": "@eropple/nestjs-bunyan",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Module and tooling for request-scoped Bunyan logging in NestJS.",
   "main": "dist",
   "author": "Ed Ropple",

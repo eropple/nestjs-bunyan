@@ -7,6 +7,13 @@ request-scoped Bunyan logger in the dependency injector and includes an
 in/out interceptor for recording request data and request timing.
 
 ## Recent Changes ##
+### 0.5.2 ###
+- Exported `BunyanLoggerService` from `@eropple/nestjs-bunyan-logger` into
+  this package. No good reason to keep them separate now that
+  `@eropple/nestjs-bunyan` is more or less mature.
+- Exported `CorrelationIdMiddleware()` from `@eropple/nestjs-correlation-id`
+  for the same reason.
+
 ### 0.5.1 ###
 - Begun to rename injector keys, prepending them with `NESTJS_BUNYAN_`. So
   `InjectorKeys.ROOT_LOGGER` now sits alongside
