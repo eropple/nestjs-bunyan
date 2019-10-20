@@ -7,6 +7,15 @@ request-scoped Bunyan logger in the dependency injector and includes an
 in/out interceptor for recording request data and request timing.
 
 ## Recent Changes ##
+### 0.5.1 ###
+- Begun to rename injector keys, prepending them with `NESTJS_BUNYAN_`. So
+  `InjectorKeys.ROOT_LOGGER` now sits alongside
+  `InjectorKeys.NESTJS_BUNYAN_ROOT_LOGGER`. In a future version, the former
+  will be removed.
+- Exported all entries in `InjectorKeys` in the package namespace, so you
+  no longer have to import `InjectorKeys` directory. I don't know what I
+  was thinking there. `InjectorKeys` will be un-exported in a future version.
+
 ### 0.5.0 ###
 - **BREAKING CHANGE**: Now uses an interceptor instead of a middleware. The
   upside is that it no longer requires calling something explicitly to set
