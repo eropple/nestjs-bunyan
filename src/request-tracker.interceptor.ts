@@ -27,11 +27,13 @@ export class RequestTrackerInterceptor implements NestInterceptor {
     const ctx = context.switchToHttp();
     const req = ctx.getRequest<IncomingMessage>();
     const res = ctx.getResponse<ServerResponse>();
+    const method = req.method;
+    const url = req.url;
 
-    const data: { [key: string]: any } = {};
-
-    data.method = req.method;
-    data.url = req.url;
+    const data: { [key: string]: any } = {
+      method,
+      url,
+    };
 
     if (this.options.ipSalt) {
       data.ipHash =
@@ -57,7 +59,13 @@ export class RequestTrackerInterceptor implements NestInterceptor {
       .pipe(
         tap(() => {
           const ms = (new Date()).valueOf() - start.valueOf();
-          this._logger.info({ request: "end", code: res.statusCode, ms });
+          this._logger.info({
+            request: "end",
+            code: res.statusCode,
+            ms,
+            method,
+            url,
+          });
         }),
       );
   }
