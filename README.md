@@ -7,6 +7,10 @@ request-scoped Bunyan logger in the dependency injector and includes an
 in/out interceptor for recording request data and request timing.
 
 ## Recent Changes ##
+### 0.5.5 ###
+- Fixed a bug that appears when using `nestjs-bunyan` under logging, where
+  the request may be null or undefined. (h/t @bdemiralp)
+
 ### 0.5.4 ###
 - Added `method` and `url` to the end events for request logging. This
   is a convenience addition to make request timing easier. (h/t @briankracoff)
