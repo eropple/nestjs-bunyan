@@ -7,6 +7,14 @@ request-scoped Bunyan logger in the dependency injector and includes an
 in/out interceptor for recording request data and request timing.
 
 ## Recent Changes ##
+### 0.5.6 ###
+- Added `route` to the start and end events emitted by the interceptor. This
+  is in addition to 0.5.4's `url` value, and does not include either query
+  strings or positional parameters--it's just the string passed into your
+  `@Get` decorator. For example, a hit on `/users/123/history` would be
+  recorded as `route: '/users/:userId/history'`. Great for aggregation in
+  your latency monitoring.
+
 ### 0.5.5 ###
 - Fixed a bug that appears when using `nestjs-bunyan` under logging, where
   the request may be null or undefined. (h/t @bdemiralp)
