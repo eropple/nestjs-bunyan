@@ -1,5 +1,6 @@
 import * as Bunyan from "bunyan";
 import * as Crypto from "crypto";
+import * as Express from "express";
 import { NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
 import { IncomingMessage, ServerResponse } from 'http';
 import { LoggingOptions } from "./options";
@@ -25,14 +26,16 @@ export class RequestTrackerInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
     const start = new Date();
     const ctx = context.switchToHttp();
-    const req = ctx.getRequest<IncomingMessage>();
+    const req = ctx.getRequest<Express.Request>();
     const res = ctx.getResponse<ServerResponse>();
     const method = req.method;
     const url = req.url;
+    const route = req.route.path;
 
     const data: { [key: string]: any } = {
       method,
       url,
+      route,
     };
 
     if (this.options.ipSalt) {
@@ -64,6 +67,7 @@ export class RequestTrackerInterceptor implements NestInterceptor {
             code: res.statusCode,
             ms,
             method,
+            route,
             url,
           });
         }),
