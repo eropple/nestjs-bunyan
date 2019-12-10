@@ -7,6 +7,11 @@ request-scoped Bunyan logger in the dependency injector and includes an
 in/out interceptor for recording request data and request timing.
 
 ## Recent Changes ##
+### 0.5.7 ###
+- Added `postRequestCreate` as a logging option. This allows you to decore
+  the request logger with fields (by setting them into `logger.fields`, see
+  the Bunyan documentation) that should be persisted for an entire request.
+
 ### 0.5.6 ###
 - Added `route` to the start and end events emitted by the interceptor. This
   is in addition to 0.5.4's `url` value, and does not include either query
