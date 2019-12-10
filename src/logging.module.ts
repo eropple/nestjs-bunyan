@@ -2,12 +2,13 @@ import { DynamicModule, Scope, Global, Module } from '@nestjs/common';
 import { FactoryProvider, ValueProvider } from '@nestjs/common/interfaces';
 import { REQUEST, APP_INTERCEPTOR } from "@nestjs/core";
 import * as Bunyan from "bunyan";
-import { IncomingMessage } from 'http';
+import { Request as ExpressRequest } from 'express';
 import { flatten } from "lodash";
 
 import { LoggingOptions } from './options';
 import { ROOT_LOGGER, LOGGER, LOGGING_OPTIONS } from './injector-keys';
 import { RequestTrackerInterceptor } from './request-tracker.interceptor';
+import { Logger } from './injector-decorations';
 
 @Global()
 @Module({})
@@ -38,11 +39,15 @@ export class LoggingModule {
           provide: LOGGER,
           scope: Scope.REQUEST,
           inject: [ROOT_LOGGER, REQUEST],
-          useFactory: (rootLogger: Bunyan, request: IncomingMessage) => {
+          useFactory: (rootLogger: Bunyan, request: ExpressRequest) => {
             const rawId = request ? request.headers[correlationIdHeader] : [];
             const correlationId = flatten<string | undefined>([rawId])[0] || "NO_CORRELATION_ID_FOUND";
 
             const requestLogger = rootLogger.child({ correlationId });
+            if (options.postRequestCreate) {
+              const newFields = options.postRequestCreate(requestLogger, request);
+              requestLogger.fields = { ...requestLogger.fields, ...newFields };
+            }
             return requestLogger;
           }
         }

@@ -1,4 +1,6 @@
 import { LogLevel, LogLevelString } from "bunyan";
+import { Bunyan } from './extra-types';
+import { Request as ExpressRequest } from 'express';
 
 export interface LoggingOptions {
   /**
@@ -42,4 +44,12 @@ export interface LoggingOptions {
    * middleware.
    */
   ipSalt?: string;
+
+  /**
+   * A function that will be executed after the creation of a request-scoped
+   * logger. This can be useful if, for example, you need to attach fields to
+   * a request that will persist for the entire request. Return an object
+   * and it will be appended into the logger's fields.
+   */
+  postRequestCreate?: (logger: Bunyan, request: ExpressRequest) => { [key: string]: any };
 }
