@@ -1,5 +1,5 @@
 {
-  "name": "@hydrow/nestjs-bunyan",
+  "name": "@eropple/nestjs-bunyan",
   "version": "0.5.7",
   "description": "Module and tooling for request-scoped Bunyan logging in NestJS.",
   "main": "dist",
