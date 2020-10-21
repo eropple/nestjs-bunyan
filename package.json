@@ -1,5 +1,5 @@
 {
-  "name": "@eropple/nestjs-bunyan",
+  "name": "@hydrow/nestjs-bunyan",
   "version": "0.5.7",
   "description": "Module and tooling for request-scoped Bunyan logging in NestJS.",
   "main": "dist",
@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eropple/nestjs-bunyan"
+    "url": "https://github.com/truerowing/nestjs-bunyan"
   },
   "private": false,
   "scripts": {
