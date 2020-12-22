@@ -43,7 +43,7 @@ export class LoggingModule {
             const rawId = (request && request.headers) ? request.headers[correlationIdHeader] : [];
             const correlationId = flatten<string | undefined>([rawId])[0] || "NO_CORRELATION_ID_FOUND";
 
-            const requestLogger = rootLogger.child({ correlationId });
+            const requestLogger = rootLogger.child({ correlationId, 'req-id': correlationId });
             if (options.postRequestCreate) {
               const newFields = options.postRequestCreate(requestLogger, request);
               requestLogger.fields = { ...requestLogger.fields, ...newFields };
