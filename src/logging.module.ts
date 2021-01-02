@@ -40,7 +40,7 @@ export class LoggingModule {
           scope: Scope.REQUEST,
           inject: [ROOT_LOGGER, REQUEST],
           useFactory: (rootLogger: Bunyan, request: ExpressRequest) => {
-            const rawId = request ? request.headers[correlationIdHeader] : [];
+            const rawId = (request && request.headers) ? request.headers[correlationIdHeader] : [];
             const correlationId = flatten<string | undefined>([rawId])[0] || "NO_CORRELATION_ID_FOUND";
 
             const requestLogger = rootLogger.child({ correlationId });
